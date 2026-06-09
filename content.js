@@ -97,7 +97,9 @@ function injectCSS() {
         
         let finalCSS = cssTemplate;
         
+        // Заменяем обычные цвета
         for (const [originalColor, newColor] of Object.entries(colorMap)) {
+            if (originalColor.startsWith('__')) continue; // Пропускаем специальные ключи
             if (newColor && originalColor !== newColor) {
                 const escapedColor = originalColor.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                 const regex = new RegExp(escapedColor + '(?![0-9a-fA-F])', 'gi');
@@ -105,10 +107,115 @@ function injectCSS() {
             }
         }
         
+        // Получаем специальные цвета
+        const bodyBg = colorMap['__body_bg__'] || '#ffffff';
+        const headingColor = colorMap['__heading_color__'] || '#172B4D';
+        const editorLinksColor = colorMap['__editor_links__'] || '#FF6600';
+        const sidebarBg = colorMap['__sidebar_bg__'] || '#ffffff';
+        
+        // Определяем цвет текста в зависимости от темы
+        const isDarkTheme = headingColor === '#ffffff' || headingColor === '#e2e8f0';
+        const textColor = isDarkTheme ? '#e2e8f0' : '#172B4D';
+        
+        // Добавляем правила для фона страницы, заголовков, левого меню и редактора
+        const specialCSS = `
+            /* Фон страницы */
+            body, html, .aui-page-panel, .aui-page-panel-content, .wiki-content, 
+            #content, .page, .plugin-tabmeta, .ajs-dialog, .aui-dialog2-content,
+            .aui-page-panel-inner, .contentLayout2, .confluence-dashboard {
+                background-color: ${bodyBg} !important;
+            }
+            
+            /* Цвет заголовков */
+            h1, h2, h3, h4, h5, h6, 
+            .wiki-content h1, .wiki-content h2, .wiki-content h3, 
+            .wiki-content h4, .wiki-content h5, .wiki-content h6,
+            .page-header-title, .aui-page-header-text, .content-text h1,
+            .content-text h2, .content-text h3, .content-text h4,
+            .content-text h5, .content-text h6 {
+                color: ${headingColor} !important;
+            }
+            
+            /* Основной текст страницы */
+            body, .wiki-content, .aui-page-panel, p, span, div:not(.aui-button):not(button), li, td, th,
+            .content-text, .page-body, .confluence-dashboard {
+                color: ${textColor} !important;
+            }
+            
+            /* ФОН ЛЕВОГО МЕНЮ (Sidebar) */
+            .acs-side-bar, #acs-side-bar, .ia-secondary-container, 
+            .aui-nav-vertical, .navigation-pseudo-link,
+            .acs-side-bar-space, .acs-side-bar-footer,
+            .ia-secondary-header, .ia-secondary-content {
+                background-color: ${sidebarBg} !important;
+            }
+            
+            /* Текст в левом меню */
+            .acs-side-bar a, .ia-secondary-container a,
+            .aui-nav-vertical li a, .navigation-pseudo-link {
+                color: ${textColor} !important;
+            }
+            
+            /* РЕДАКТОР (tinymce) - фон и текст */
+            #tinymce.wiki-content, 
+            .mce-content-body,
+            .mce-edit-area,
+            iframe.mce-edit-area,
+            #tinymce,
+            .wiki-content.mce-content-body,
+            .mce-container-body {
+                background-color: ${bodyBg} !important;
+                color: ${textColor} !important;
+            }
+            
+            /* Текст в редакторе */
+            #tinymce.wiki-content p,
+            #tinymce.wiki-content span,
+            #tinymce.wiki-content div,
+            #tinymce.wiki-content h1,
+            #tinymce.wiki-content h2,
+            #tinymce.wiki-content h3,
+            #tinymce.wiki-content h4,
+            #tinymce.wiki-content h5,
+            #tinymce.wiki-content h6,
+            #tinymce.wiki-content li,
+            #tinymce.wiki-content td,
+            #tinymce.wiki-content th {
+                color: ${textColor} !important;
+            }
+            
+            /* Заголовки в редакторе */
+            #tinymce.wiki-content h1,
+            #tinymce.wiki-content h2,
+            #tinymce.wiki-content h3,
+            #tinymce.wiki-content h4,
+            #tinymce.wiki-content h5,
+            #tinymce.wiki-content h6 {
+                color: ${headingColor} !important;
+            }
+            
+            /* ССЫЛКИ В РЕДАКТОРЕ */
+            #tinymce.wiki-content a,
+            #tinymce.wiki-content a:link,
+            #tinymce.wiki-content a:visited,
+            #tinymce.wiki-content a:focus,
+            #tinymce.wiki-content a:hover,
+            #tinymce.wiki-content a:active,
+            .mce-content-body a,
+            .mce-content-body a:link,
+            .mce-content-body a:visited {
+                color: ${editorLinksColor} !important;
+            }
+        `;
+        
+        finalCSS += specialCSS;
+        
+        // Шрифт
         const fontCSS = `
             body, .wiki-content, .aui-page-panel, .aui-header, .aui-page-header, 
             .aui-page-panel-item, .aui-nav, .aui-dropdown2, .aui-button,
-            h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th, input, textarea, select {
+            h1, h2, h3, h4, h5, h6, p, span, div, a, li, td, th, input, textarea, select,
+            #tinymce.wiki-content, .mce-content-body {
                 font-family: ${selectedFont} !important;
             }
         `;
