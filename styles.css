@@ -1,0 +1,112 @@
+body {
+    width: 450px;
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    color: #172B4D;
+}
+h3 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    text-align: center;
+    color: #0052CC;
+}
+.setting {
+    margin-bottom: 12px;
+}
+.setting label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+.setting input,
+.setting select {
+    width: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #DFE1E6;
+    border-radius: 4px;
+}
+.setting select {
+    background: white;
+    cursor: pointer;
+}
+.color-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border: 1px solid #DFE1E6;
+    border-radius: 4px;
+    background: #FAFBFC;
+}
+.color-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #DFE1E6;
+    gap: 10px;
+}
+.color-item:last-child {
+    border-bottom: none;
+}
+.color-label {
+    flex: 1;
+    font-size: 11px;
+    color: #172B4D;
+    text-align: right;
+    font-style: italic;
+}
+.color-swatch {
+    width: 30px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.color-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+.color-input-wrapper input[type="text"] {
+    width: 80px;
+    padding: 4px 6px;
+    border: 1px solid #DFE1E6;
+    border-radius: 3px;
+    font-size: 11px;
+    font-family: monospace;
+}
+.color-input-wrapper input[type="color"] {
+    width: 30px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid #DFE1E6;
+    border-radius: 3px;
+    cursor: pointer;
+    background: white;
+}
+.actions {
+    display: flex;
+    gap: 10px;
+}
+.actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+.actions button:hover {
+    opacity: 0.9;
+}
+#saveBtn {
+    background-color: #0052CC;
+    color: white;
+}
+#resetBtn {
+    background-color: #DFE1E6;
+    color: #172B4D;
+}
